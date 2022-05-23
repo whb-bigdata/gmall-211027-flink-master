@@ -3,7 +3,7 @@
 <configuration>
     <property>
         <name>hbase.rootdir</name>
-        <value>hdfs://hadoop100:8020/HBase</value>
+        <value>hdfs://hadoop103:8020/HBase</value>
     </property>
 
     <property>
