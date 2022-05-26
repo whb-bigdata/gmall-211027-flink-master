@@ -101,6 +101,7 @@ public class TableProcessFunction extends BroadcastProcessFunction<JSONObject, S
 
             //执行
             preparedStatement.execute();
+            System.out.println("建表完成");
 
         } catch (SQLException e) {
             throw new RuntimeException("建表" + sinkTable + "失败！");

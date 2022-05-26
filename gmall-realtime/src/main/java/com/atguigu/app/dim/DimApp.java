@@ -59,14 +59,14 @@ public class DimApp {
                 .hostname("hadoop100")
                 .port(3306)
                 .username("root")
-                .password("000000")
-                .databaseList("gmall-211027-config")
-                .tableList("gmall-211027-config.table_process")
+                .password("123456")
+                .databaseList("gmall_config")
+                .tableList("gmall_config.table_process")
                 .deserializer(new JsonDebeziumDeserializationSchema())
                 .startupOptions(StartupOptions.initial())
                 .build();
         DataStreamSource<String> mysqlSourceDS = env.fromSource(mySqlSource, WatermarkStrategy.noWatermarks(), "MysqlSource");
-
+        mysqlSourceDS.print("cdc数据>>>>>>>>>>>>");
         //TODO 5.将配置信息流处理成广播流
         MapStateDescriptor<String, TableProcess> mapStateDescriptor = new MapStateDescriptor<>("map-state", String.class, TableProcess.class);
         BroadcastStream<String> broadcastStream = mysqlSourceDS.broadcast(mapStateDescriptor);
@@ -78,7 +78,7 @@ public class DimApp {
         SingleOutputStreamOperator<JSONObject> hbaseDS = connectedStream.process(new TableProcessFunction(mapStateDescriptor));
 
         //TODO 8.将数据写出到Phoenix中
-        hbaseDS.print(">>>>>>>>>>>>>");
+        hbaseDS.print("将数据写出到Phoenix>>>>>>>>>>>>>");
         hbaseDS.addSink(new DimSinkFunction());
 
         //TODO 9.启动任务
