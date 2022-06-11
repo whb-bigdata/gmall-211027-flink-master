@@ -87,9 +87,11 @@ public class DwdTradeOrderRefund {
         SingleOutputStreamOperator<OrderInfoRefundBean> filteredDS = orderInfoRefundDS.filter(
                 orderInfoRefund -> {
                     String old = orderInfoRefund.getOld();
+                    //old 不为null说明有old字段
                     if (old != null) {
                         Map oldMap = JSON.parseObject(old, Map.class);
                         Set changeKeys = oldMap.keySet();
+                        //order_status要有一个key为order_status，而不管里面的值为多少
                         return changeKeys.contains("order_status");
                     }
                     return false;
