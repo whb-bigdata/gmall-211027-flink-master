@@ -40,9 +40,9 @@ public class DimSinkFunction extends RichSinkFunction<JSONObject> {
             preparedStatement = connection.prepareStatement(upsertSql);
 
             //如果当前为更新数据,则需要删除缓存数据
-//            if ("update".equals(value.getString("type"))) {
-//                DimUtil.delDimInfo(sinkTable.toUpperCase(), data.getString("id"));
-//            }
+            if ("update".equals(value.getString("type"))) {
+                DimUtil.delDimInfo(sinkTable.toUpperCase(), data.getString("id"));
+            }
 
             //执行写入操作
             preparedStatement.execute();
